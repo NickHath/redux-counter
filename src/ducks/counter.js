@@ -6,13 +6,20 @@ const initialState = {
 
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
+const UNDO = 'UNDO';
+const REDO = 'REDO';
 
 export default function counter(state=initialState, action) {
   switch(action.type) {
     case INCREMENT:
       return Object.assign({}, state, { currentValue: state.currentValue + action.amount} );
     case DECREMENT:
-      return Object.assign({}, state, { currentValue: state.currentValue - action.amount} );    
+      return Object.assign({}, state, { currentValue: state.currentValue - action.amount} ); 
+    case UNDO:
+      let lastVal = state.previousValues.pop();
+      return Object.assign({}, state, { currentValue: lastVal });
+    case REDO:
+      return ;   
     default: 
       return state;
   }
@@ -29,6 +36,18 @@ export function decrement(amount) {
   return {
     type: DECREMENT,
     amount: amount
+  }
+}
+
+export function undo() {
+  return {
+    type: UNDO
+  }
+}
+
+export function redo() {
+  return {
+    type: REDO
   }
 }
 
